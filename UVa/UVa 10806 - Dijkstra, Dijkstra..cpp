@@ -85,7 +85,7 @@ struct MCMF{
 	void MinCost(int s,int t){
 		int cost=0;
 		while(SPFA(s,t,cost));
-		return this->cost=cost;
+		this->cost=cost;
 	}
 };
 		
