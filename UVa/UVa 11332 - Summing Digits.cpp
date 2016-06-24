@@ -20,6 +20,7 @@
 using namespace std;
 
 int main(){
-
+	int n;
+	while(~sf("%d",&n),n)pf("%d\n",(n-1)%9+1);
 	return 0;
 }

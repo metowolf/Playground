@@ -19,7 +19,12 @@
 #define maxn 50
 using namespace std;
 
-int main(){
+int f91(int x){return x<=100?f91(f91(x+11)):x-10;}
 
+int main(){
+	int n;
+	while(~sf("%d",&n),n){
+		pf("f91(%d) = %d\n",n,f91(n));
+	}
 	return 0;
 }

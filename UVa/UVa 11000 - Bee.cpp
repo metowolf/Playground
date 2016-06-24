@@ -20,6 +20,13 @@
 using namespace std;
 
 int main(){
-
+	int n;
+	while(~sf("%d",&n),~n){
+		long long l=0,r=0;
+		while(n--){
+			r+=l,swap(l,++r);
+		}
+		pf("%lld %lld\n",l,l+r+1);
+	}
 	return 0;
 }

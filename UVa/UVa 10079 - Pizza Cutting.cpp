@@ -20,6 +20,7 @@
 using namespace std;
 
 int main(){
-
+	long long n;
+	while(~sf("%lld",&n),n>=0)pf("%lld\n",n*(n+1)/2+1);
 	return 0;
 }
