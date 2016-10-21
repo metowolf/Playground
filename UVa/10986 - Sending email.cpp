@@ -1,83 +1,85 @@
-#include<algorithm>
-#include <iostream>
-#include  <cstring>
-#include  <cstdlib>
-#include   <cstdio>
-#include   <vector>
-#include    <cmath>
-#include    <queue>
-#include     <list>
-#include      <map>
-#include      <set>
-#define REP(i,a,b) for(int i=a;i<=b;++i)
-#define FOR(i,a,b) for(int i=a;i!=b;++i)
-#define CLR(c,x)   memset(c,x,sizeof(c))
-#pragma GCC  optimize("O2")
-#define INF  ~0U>>2
-#define EPS  1e-8
-#define maxn 100
+#include<bits/stdc++.h>
+#define maxn 20000
+#define maxm 100000
 using namespace std;
 
-struct edge{int from,to,dis;};
+const int INF=~0U>>2;
 
-int n,m,S,lim;
-vector<edge>E;
-vector<int>G[maxn+2];
-bool done[maxn+2];
-int d[maxn+2];
+struct edge{
+	int from,to,dis;
+}E[maxm+2];
 
-struct node{
-	int x;
-	friend bool operator <(node a,node b){
-		return d[a.x]>d[b.x];
-	}
-};
+int n,m,S,T;
+int head[maxn+2],nxt[maxm+2],cnt=0;
 
-void addedge(int from,int to,int dis){
-	E.push_back((edge){from,to,dis});
-	G[from].push_back(E.size()-1);
+inline void addedge(int from,int to,int dis){
+	E[cnt]=(edge){from,to,dis};
+	nxt[cnt]=head[from],head[from]=cnt++;
 }
 
-int main(){
+int dis[maxn+2];
+bool vis[maxn+2];
 
-	//freopen("input.txt","r",stdin);
-	//freopen("output.txt","w",stdout);
-
-	int T;
-	scanf("%d",&T);
-	while(T--){
-		scanf("%d%d%d%d",&n,&S,&lim,&m);
-		// Initial
-		E.clear();
-		REP(i,1,n)G[i].clear();
-		while(m--){
-			int a,b,c;
-			scanf("%d%d%d",&a,&b,&c);
-			addedge(b,a,c);
-		}
-		// Dijkstra
-		REP(i,1,n)d[i]=INF,done[i]=0;
-		priority_queue<node>Q;
-		Q.push((node){S});
-		d[S]=0;
-		while(!Q.empty()){
-			node t=Q.top();
-			Q.pop();
-			if(done[t.x])continue;
-			done[t.x]=1;
-			for(int i:G[t.x]){
-				edge &e=E[i];
-				if(d[e.to]>d[e.from]+e.dis){
-					d[e.to]=d[e.from]+e.dis;
-					Q.push((node){e.to});
+/*void SPFA(){
+	queue<int>Q;
+	for(int i=0;i<n;i++)dis[i]=INF,vis[i]=0;
+	dis[S]=0,vis[S]=1;
+	Q.push(S);
+	while(!Q.empty()){
+		int t=Q.front();Q.pop();
+		vis[t]=0;
+		for(int i=head[t];~i;i=nxt[i]){
+			edge &e=E[i];
+			if(dis[e.from]+e.dis<dis[e.to]){
+				dis[e.to]=dis[e.from]+e.dis;
+				if(!vis[e.to]){
+					vis[e.to]=1;
+					Q.push(e.to);
 				}
 			}
 		}
+	}
+}*/
+
+typedef pair<int,int> PII;
+void dijkstra(){
+	for(int i=0;i<n;i++)dis[i]=INF,vis[i]=0;
+	dis[S]=0;
+	priority_queue<PII,vector<PII>,greater<PII>>Q;
+	Q.push(PII(dis[S],S));
+	while(!Q.empty()){
+		PII t=Q.top();Q.pop();
+		if(vis[t.second])continue;
+		vis[t.second]=1;
+		for(int i=head[t.second];~i;i=nxt[i]){
+			edge &e=E[i];
+			if(dis[e.to]>dis[e.from]+e.dis){
+				dis[e.to]=dis[e.from]+e.dis;
+				Q.push(PII(dis[e.to],e.to));
+			}
+		}
+	}
+}
 		
-		int ans=0;
-		REP(i,1,n)ans+=d[i]<=lim;
-		printf("%d\n",ans);
-		if(T)putchar('\n');
+
+int main(){
+	int Kase,_=0;
+	scanf("%d",&Kase);
+	while(Kase--){
+		scanf("%d%d%d%d",&n,&m,&S,&T);
+		for(int i=0;i<n;i++)head[i]=-1;
+		cnt=0;
+		for(int i=1;i<=m;i++){
+			int a,b,c;
+			scanf("%d%d%d",&a,&b,&c);
+			addedge(a,b,c);
+			addedge(b,a,c);
+		}
+		//SPFA();
+		dijkstra();
+		printf("Case #%d: ",++_);
+		if(dis[T]!=INF)printf("%d\n",dis[T]);
+		else printf("unreachable\n");
 	}
 	return 0;
 }
