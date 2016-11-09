@@ -1,41 +1,32 @@
-#include<algorithm>
-#include <iostream>
-#include  <cstring>
-#include  <cstdlib>
-#include   <cstdio>
-#include   <vector>
-#include    <cmath>
-#include    <queue>
-#include      <map>
-#include      <set>
-#define REP(i,a,b) for(int i=a;i<=b;++i)
-#define FOR(i,a,b) for(int i=a;i!=b;++i)
-#define CLR(c,x)   memset(c,x,sizeof(c))
-#pragma GCC  optimize("O2")
-#define INF  ~0U>>2
-#define EPS  1e-8
-#define maxn 105
+#include<iostream>
+#include<cstdio>
+#include<map>
 using namespace std;
 
+map<string,int>Tree;
+
+bool _gets(string &s){
+	s="";
+	int len=0;
+	char c;
+	while((c=getchar())!=EOF){
+		if(c=='\n')break;
+		s=s+c;
+		len++;
+	}
+	return len;
+}
+
 int main(){
-
-	//freopen("input.txt","r",stdin);
-
 	int T;
 	scanf("%d\n\n",&T);
 	while(T--){
-		int cnt=0;
-		string s;
-		map<string,int>H;
-		while(getline(cin,s,'\n')&&s[0]){
-			cnt++;
-			if(H.count(s))++H[s];
-			else H[s]=1;
-		}
-		for(map<string,int>::iterator it=H.begin();it!=H.end();it++){
-			printf("%s %0.4f\n",it->first.c_str(),it->second*100.0/cnt);
-		}
-		if(T)putchar('\n');
+		string s;int cnt=0;
+		Tree.clear();
+		while(_gets(s))Tree[s]++,cnt++;
+		for(auto it=Tree.begin();it!=Tree.end();it++)
+			printf("%s %.4lf\n",it->first.c_str(),it->second*100./cnt);
+		if(T)printf("\n");
 	}
 	return 0;
 }
