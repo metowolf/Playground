@@ -7,3 +7,6 @@
 *.exe
 *.out
 *.app
+
+# Test Data
+*.txt
